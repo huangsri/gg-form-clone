@@ -2,21 +2,28 @@ import { Box, IconButton, Tab } from '@mui/material'
 import { styled } from '@mui/system'
 import { TabList } from '@mui/lab'
 import { Dispatch, SetStateAction } from 'react'
+import { ChevronLeft, ChevronRight, DeleteOutlined } from '@mui/icons-material'
 
 import { pluralize } from '@/lib/utils'
-import { ChevronLeft, ChevronRight } from '@mui/icons-material'
 
 type ResponseTitleProps = {
   count: number
-  handleChangeTab: (event: React.SyntheticEvent, newValue: string) => void
-  currentTab: string
   currentIndex: number
+  currentTab: string
+  handleChangeTab: (event: React.SyntheticEvent, newValue: string) => void
+  handleDelete: () => void
   setCurrentIndex: Dispatch<SetStateAction<number>>
 }
 
 export const ResponseTitle = (props: ResponseTitleProps) => {
-  const { count, handleChangeTab, currentTab, currentIndex, setCurrentIndex } =
-    props
+  const {
+    count,
+    currentIndex,
+    currentTab,
+    handleChangeTab,
+    handleDelete,
+    setCurrentIndex,
+  } = props
 
   return (
     <Box
@@ -33,7 +40,13 @@ export const ResponseTitle = (props: ResponseTitleProps) => {
       <CustomTab handleChange={handleChangeTab} />
 
       {currentTab === '3' && (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <Box sx={{ display: 'flex', alignItems: 'center', p: '12px' }}>
             <IconButton
               aria-label="previous"
@@ -51,6 +64,12 @@ export const ResponseTitle = (props: ResponseTitleProps) => {
               onClick={() => setCurrentIndex((s) => s + 1)}
             >
               <ChevronRight />
+            </IconButton>
+          </Box>
+
+          <Box sx={{ p: '12px' }}>
+            <IconButton aria-label="delete response" onClick={handleDelete}>
+              <DeleteOutlined />
             </IconButton>
           </Box>
         </Box>
