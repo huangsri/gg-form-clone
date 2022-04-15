@@ -40,3 +40,6 @@ export const defaultFormValue: FormInput = {
   leaveType: 'Sick',
   when: '',
 }
+
+export const LEAVE_PERIODS = ['Full Day', 'First Half', 'Second Half'] as const
+export const LEAVE_TYPES = ['Sick', 'Vacation', 'Business', 'Other'] as const
