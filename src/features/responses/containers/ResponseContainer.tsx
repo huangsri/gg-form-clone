@@ -1,9 +1,9 @@
-import { LeavePeriod, LeaveType } from '@/features/forms/types'
 import { Box } from '@mui/material'
 import { Fragment, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 
 import {
+  BarChartResponseProps,
   EmptyResponse,
   LoadingResponse,
   PieChartResponseProps,
@@ -12,10 +12,17 @@ import {
 
 import { useResponses } from '../services'
 
+import { LeavePeriod, LeaveType } from '@/features/forms/types'
 import { PIE_COLORS } from '../constants'
 
 const DynamicPieChartResponse = dynamic<PieChartResponseProps>(
   () => import('../components').then((mod) => mod.PieChartResponse),
+  {
+    ssr: false,
+  }
+)
+const DynamicBarChartResponse = dynamic<BarChartResponseProps>(
+  () => import('../components').then((mod) => mod.BarChartResponse),
   {
     ssr: false,
   }
@@ -30,7 +37,7 @@ export const ResponseContainer = () => {
     setCurrentTable(newValue)
   }
 
-  const { leavePeriods, leaveTypes } = useMemo(() => {
+  const { leavePeriods, leaveTypes, names, useNormalList } = useMemo(() => {
     const _leaveType: Record<LeaveType, number> = {
       Sick: 0,
       Vacation: 0,
@@ -44,10 +51,16 @@ export const ResponseContainer = () => {
       'Second Half': 0,
     }
 
-    data?.forEach(({ leavePeriod, leaveType }) => {
+    const _name: Record<string, number> = {}
+
+    data?.forEach(({ leavePeriod, leaveType, name }) => {
       _leaveType[leaveType] += 1
       _leavePeriod[leavePeriod] += 1
+
+      _name[name] = _name[name] ? (_name[name] += 1) : 1
     })
+
+    const numberOfUniqueName = Object.keys(_name).length
 
     return {
       leaveTypes: Object.keys(_leaveType).map((k, idx) => ({
@@ -60,6 +73,11 @@ export const ResponseContainer = () => {
         value: _leavePeriod[k],
         color: PIE_COLORS[idx],
       })),
+      names: Object.keys(_name).map((k) => ({
+        id: k,
+        value: _name[k],
+      })),
+      useNormalList: numberOfUniqueName === data?.length ?? false,
     }
   }, [data])
 
@@ -76,6 +94,12 @@ export const ResponseContainer = () => {
         <Fragment>
           {data?.length ? (
             <Fragment>
+              <DynamicBarChartResponse
+                title="Name"
+                count={data.length}
+                data={names}
+                useNormalList={useNormalList}
+              />
               <DynamicPieChartResponse
                 title="Leave Period"
                 count={data.length}
