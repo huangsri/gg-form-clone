@@ -1,19 +1,19 @@
-import { Box, Grid } from '@mui/material'
+import { Box } from '@mui/material'
 import { useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+
+import { useAddResponse } from '@/features/responses/services'
 
 import { Form, FormSuccess, FormTitle } from '../components'
-
-import { FormInput } from '../types'
 
 const formTitle = 'Leave Form'
 
 export const FormContainer = () => {
   const [finished, setFinished] = useState(false)
 
+  const { mutate: addResponse, isLoading } = useAddResponse()
+
   return (
     <Box>
-      <button onClick={() => setFinished(true)}>Success</button>
       {finished ? (
         <FormSuccess
           title={formTitle}
@@ -23,7 +23,19 @@ export const FormContainer = () => {
         <Box sx={{ display: 'grid', gap: '12px' }}>
           <FormTitle title={formTitle} />
 
-          <Form />
+          <Form
+            onSubmitForm={(data) => {
+              addResponse(
+                { data },
+                {
+                  onSuccess() {
+                    setFinished(true)
+                  },
+                }
+              )
+            }}
+            isLoading={isLoading}
+          />
         </Box>
       )}
     </Box>

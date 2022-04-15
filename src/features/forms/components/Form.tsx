@@ -22,20 +22,27 @@ import {
 
 import { FormInput } from '../types'
 import { formSchema } from '../schema'
+import { LoadingButton } from '@mui/lab'
 
-type FormProps = {}
+type FormProps = {
+  onSubmitForm: (data: FormInput) => void
+  isLoading: boolean
+}
 
 export const Form = (props: FormProps) => {
-  const { register, handleSubmit, control, formState } = useForm<FormInput>({
-    defaultValues: defaultFormValue,
-    resolver: zodResolver(formSchema),
-  })
+  const { onSubmitForm, isLoading } = props
+
+  const { register, handleSubmit, control, formState, reset } =
+    useForm<FormInput>({
+      defaultValues: defaultFormValue,
+      resolver: zodResolver(formSchema),
+    })
   const { errors } = formState
 
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        console.log(data)
+        onSubmitForm(data)
       })}
     >
       <Box sx={{ display: 'grid', gap: '12px' }}>
@@ -125,10 +132,17 @@ export const Form = (props: FormProps) => {
             },
           }}
         >
-          <Button type="submit" variant="contained" sx={{ px: '24px' }}>
+          <LoadingButton
+            type="submit"
+            variant="contained"
+            sx={{ px: '24px' }}
+            loading={isLoading}
+          >
             Submit
+          </LoadingButton>
+          <Button variant="text" onClick={() => reset()}>
+            Clear form
           </Button>
-          <Button variant="text">Clear form</Button>
         </Box>
       </Box>
     </form>
