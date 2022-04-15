@@ -3,6 +3,7 @@ import { AppProps } from 'next/app'
 import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 import { ThemeProvider, createEmotionCache } from '@/styles/theme'
 import { Fragment } from 'react'
@@ -40,6 +41,8 @@ export default function MyApp(props: MyAppProps) {
             <Component {...pageProps} />
           </ThemeProvider>
         </CacheProvider>
+
+        <ReactQueryDevtools position="bottom-right" initialIsOpen={false} />
       </QueryClientProvider>
     </Fragment>
   )
