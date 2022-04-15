@@ -48,7 +48,6 @@ export const BarChartResponse = (props: BarChartResponseProps) => {
               colors={() => '#673ab7'}
               labelTextColor="white"
               label={({ value }) => {
-                console.log(value, data.length)
                 const percent = (((value ?? 0) / total) * 100).toFixed(1)
 
                 return `${value} (${percent}%)`
