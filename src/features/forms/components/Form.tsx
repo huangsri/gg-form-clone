@@ -23,26 +23,36 @@ import {
 import { FormInput } from '../types'
 import { formSchema } from '../schema'
 import { LoadingButton } from '@mui/lab'
+import { useEffect } from 'react'
 
 type FormProps = {
-  onSubmitForm: (data: FormInput) => void
+  onSubmitForm?: (data: FormInput) => void
   isLoading: boolean
+  defaultValues?: FormInput
 }
 
 export const Form = (props: FormProps) => {
-  const { onSubmitForm, isLoading } = props
+  const { onSubmitForm, isLoading, defaultValues } = props
 
   const { register, handleSubmit, control, formState, reset } =
     useForm<FormInput>({
-      defaultValues: defaultFormValue,
+      defaultValues: defaultValues ? defaultValues : defaultFormValue,
       resolver: zodResolver(formSchema),
     })
   const { errors } = formState
 
+  const isReadOnly = Boolean(defaultValues)
+
+  useEffect(() => {
+    if (isReadOnly) {
+      reset(defaultValues)
+    }
+  }, [defaultValues])
+
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        onSubmitForm(data)
+        onSubmitForm && onSubmitForm(data)
       })}
     >
       <Box sx={{ display: 'grid', gap: '12px' }}>
@@ -54,6 +64,9 @@ export const Form = (props: FormProps) => {
             {...register('name')}
             error={Boolean(errors.name?.message)}
             helperText={errors.name?.message}
+            InputProps={{
+              readOnly: isReadOnly,
+            }}
           />
         </FormWrapper>
         <FormWrapper title="Leave Period">
@@ -76,7 +89,7 @@ export const Form = (props: FormProps) => {
                         key={opt.value}
                         value={opt.value}
                         label={opt.label}
-                        control={<Radio />}
+                        control={<Radio disabled={isReadOnly} />}
                       />
                     )
                   })}
@@ -99,6 +112,7 @@ export const Form = (props: FormProps) => {
                   displayEmpty
                   inputProps={{ 'aria-label': 'Without label' }}
                   sx={{ width: '176px' }}
+                  readOnly={isReadOnly}
                 >
                   {leaveTypeOptions.map((opt) => {
                     return (
@@ -114,7 +128,7 @@ export const Form = (props: FormProps) => {
         </FormWrapper>
         <FormWrapper title="When">
           <FormControl error={Boolean(errors.when?.message)}>
-            <Input type="date" {...register('when')} />
+            <Input type="date" {...register('when')} readOnly={isReadOnly} />
             {errors.when?.message && (
               <FormHelperText sx={{ mx: 0 }}>
                 {errors.when?.message}
@@ -123,27 +137,29 @@ export const Form = (props: FormProps) => {
           </FormControl>
         </FormWrapper>
 
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            button: {
-              textTransform: 'unset',
-            },
-          }}
-        >
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            sx={{ px: '24px' }}
-            loading={isLoading}
+        {!isReadOnly && (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              button: {
+                textTransform: 'unset',
+              },
+            }}
           >
-            Submit
-          </LoadingButton>
-          <Button variant="text" onClick={() => reset()}>
-            Clear form
-          </Button>
-        </Box>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              sx={{ px: '24px' }}
+              loading={isLoading}
+            >
+              Submit
+            </LoadingButton>
+            <Button variant="text" onClick={() => reset()}>
+              Clear form
+            </Button>
+          </Box>
+        )}
       </Box>
     </form>
   )
@@ -166,7 +182,17 @@ const FormWrapper = (props: FormWrapperProps) => {
         border: '1px solid #dadce0',
       }}
     >
-      <Box>{title}</Box>
+      <Box
+        sx={{
+          span: {
+            color: 'red',
+            display: 'inline-block',
+            ml: '2px',
+          },
+        }}
+      >
+        {title} <span>*</span>
+      </Box>
       <Box sx={{ mt: '16px' }}>{children}</Box>
     </Box>
   )

@@ -1,16 +1,22 @@
-import { Box, Tab } from '@mui/material'
+import { Box, IconButton, Tab } from '@mui/material'
 import { styled } from '@mui/system'
 import { TabList } from '@mui/lab'
+import { Dispatch, SetStateAction } from 'react'
 
 import { pluralize } from '@/lib/utils'
+import { ChevronLeft, ChevronRight } from '@mui/icons-material'
 
 type ResponseTitleProps = {
   count: number
   handleChangeTab: (event: React.SyntheticEvent, newValue: string) => void
+  currentTab: string
+  currentIndex: number
+  setCurrentIndex: Dispatch<SetStateAction<number>>
 }
 
 export const ResponseTitle = (props: ResponseTitleProps) => {
-  const { count, handleChangeTab } = props
+  const { count, handleChangeTab, currentTab, currentIndex, setCurrentIndex } =
+    props
 
   return (
     <Box
@@ -25,6 +31,30 @@ export const ResponseTitle = (props: ResponseTitleProps) => {
       </Box>
 
       <CustomTab handleChange={handleChangeTab} />
+
+      {currentTab === '3' && (
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', p: '12px' }}>
+            <IconButton
+              aria-label="previous"
+              onClick={() => setCurrentIndex((s) => s - 1)}
+              disabled={currentIndex < 1}
+            >
+              <ChevronLeft />
+            </IconButton>
+            <Box sx={{ mx: '8px' }}>{currentIndex + 1}</Box>
+            <Box>of</Box>
+            <Box sx={{ mx: '8px' }}>{count}</Box>
+            <IconButton
+              aria-label="next"
+              disabled={currentIndex >= count - 1}
+              onClick={() => setCurrentIndex((s) => s + 1)}
+            >
+              <ChevronRight />
+            </IconButton>
+          </Box>
+        </Box>
+      )}
     </Box>
   )
 }
@@ -43,7 +73,6 @@ const CustomTab = (props: CustomTabProps) => {
         <StyledTab value="2" label="Question" />
         <StyledTab value="3" label="Individual" />
       </StyledTabs>
-      <Box sx={{ p: 3 }} />
     </Box>
   )
 }

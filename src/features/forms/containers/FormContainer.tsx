@@ -5,7 +5,7 @@ import { useAddResponse } from '@/features/responses/services'
 
 import { Form, FormSuccess, FormTitle } from '../components'
 
-const formTitle = 'Leave Form'
+import { FORM_TITLE } from '../constants'
 
 export const FormContainer = () => {
   const [finished, setFinished] = useState(false)
@@ -16,12 +16,12 @@ export const FormContainer = () => {
     <Box>
       {finished ? (
         <FormSuccess
-          title={formTitle}
+          title={FORM_TITLE}
           handleReSubmit={() => setFinished(false)}
         />
       ) : (
         <Box sx={{ display: 'grid', gap: '12px' }}>
-          <FormTitle title={formTitle} />
+          <FormTitle title={FORM_TITLE} />
 
           <Form
             onSubmitForm={(data) => {

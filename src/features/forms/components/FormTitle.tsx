@@ -1,12 +1,14 @@
-import { Box, Input, TextField } from '@mui/material'
+import { Box } from '@mui/material'
 import { deepPurple } from '@mui/material/colors'
 
 type FormTitleProps = {
   title: string
+  description?: string
+  isReadOnly?: boolean
 }
 
 export const FormTitle = (props: FormTitleProps) => {
-  const { title } = props
+  const { title, isReadOnly, description } = props
 
   return (
     <Box
@@ -37,8 +39,15 @@ export const FormTitle = (props: FormTitleProps) => {
           borderBottom: '1px solid #dadce0',
         }}
       >
-        <Box sx={{ fontSize: '32px' }}>{title}</Box>
-        <Box sx={{ mt: '12px' }}>Description</Box>
+        {isReadOnly && (
+          <Box sx={{ fontSize: '12px', color: '#70757a' }}>
+            Responses cannot be edited
+          </Box>
+        )}
+        <Box sx={{ fontSize: '32px', mt: isReadOnly ? '12px' : 0 }}>
+          {title}
+        </Box>
+        {description && <Box sx={{ mt: '12px' }}>{description}</Box>}
       </Box>
       <Box
         sx={{
@@ -48,8 +57,7 @@ export const FormTitle = (props: FormTitleProps) => {
           p: '12px 24px 16px',
         }}
       >
-        <Box sx={{ fontSize: '14px' }}>huang@datawow.io</Box>
-        <Box sx={{ fontSize: '12px', color: '#5f6368' }}>Draft saved</Box>
+        <Box sx={{ color: 'red' }}>* Required</Box>
       </Box>
     </Box>
   )
