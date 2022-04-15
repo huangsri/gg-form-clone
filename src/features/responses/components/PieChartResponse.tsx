@@ -33,6 +33,9 @@ export const PieChartResponse = (props: PieChartResponseProps) => {
           }}
         >
           <ResponsivePie
+            arcLabel={({ value }) => {
+              return `${((value / total) * 100).toFixed(1)}%`
+            }}
             arcLabelsRadiusOffset={0.7}
             arcLabelsSkipAngle={10}
             arcLabelsTextColor="white"
@@ -47,7 +50,7 @@ export const PieChartResponse = (props: PieChartResponseProps) => {
               right: matches ? 180 : 140,
             }}
             tooltip={({ datum }) => {
-              const percent = (datum.value / total) * 100
+              const percent = ((datum.value / total) * 100).toFixed(1)
 
               return (
                 <Box
