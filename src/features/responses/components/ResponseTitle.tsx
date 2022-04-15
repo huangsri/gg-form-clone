@@ -1,16 +1,16 @@
-import { Box, Tab, Tabs } from '@mui/material'
+import { Box, Tab } from '@mui/material'
 import { styled } from '@mui/system'
+import { TabList } from '@mui/lab'
 
 import { pluralize } from '@/lib/utils'
 
 type ResponseTitleProps = {
   count: number
-  currentTab: number
-  handleChangeTab: (event: React.SyntheticEvent, newValue: number) => void
+  handleChangeTab: (event: React.SyntheticEvent, newValue: string) => void
 }
 
 export const ResponseTitle = (props: ResponseTitleProps) => {
-  const { count, currentTab, handleChangeTab } = props
+  const { count, handleChangeTab } = props
 
   return (
     <Box
@@ -24,29 +24,24 @@ export const ResponseTitle = (props: ResponseTitleProps) => {
         {count} {pluralize({ count, one: 'response', other: 'responses' })}
       </Box>
 
-      <CustomTab currentTab={currentTab} handleChange={handleChangeTab} />
+      <CustomTab handleChange={handleChangeTab} />
     </Box>
   )
 }
 
 type CustomTabProps = {
-  currentTab: number
-  handleChange: (event: React.SyntheticEvent, newValue: number) => void
+  handleChange: (event: React.SyntheticEvent, newValue: string) => void
 }
 
 const CustomTab = (props: CustomTabProps) => {
-  const { currentTab, handleChange } = props
+  const { handleChange } = props
 
   return (
     <Box>
-      <StyledTabs
-        value={currentTab}
-        onChange={handleChange}
-        aria-label="styled tabs example"
-      >
-        <StyledTab label="Summary" />
-        <StyledTab label="Question" />
-        <StyledTab label="Individual" />
+      <StyledTabs onChange={handleChange} aria-label="styled tabs example">
+        <StyledTab value="1" label="Summary" />
+        <StyledTab value="2" label="Question" />
+        <StyledTab value="3" label="Individual" />
       </StyledTabs>
       <Box sx={{ p: 3 }} />
     </Box>
@@ -55,12 +50,11 @@ const CustomTab = (props: CustomTabProps) => {
 
 type StyledTabsProps = {
   children?: React.ReactNode
-  value: number
-  onChange: (event: React.SyntheticEvent, newValue: number) => void
+  onChange: (event: React.SyntheticEvent, newValue: string) => void
 }
 
 const StyledTabs = styled((props: StyledTabsProps) => (
-  <Tabs
+  <TabList
     {...props}
     variant="fullWidth"
     TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
@@ -82,6 +76,7 @@ const StyledTabs = styled((props: StyledTabsProps) => (
 
 type StyledTabProps = {
   label: string
+  value: string
 }
 
 const StyledTab = styled((props: StyledTabProps) => <Tab {...props} />)(

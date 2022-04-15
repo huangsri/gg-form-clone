@@ -1,12 +1,5 @@
-import {
-  collection,
-  doc,
-  DocumentData,
-  getDocs,
-  query,
-  QueryDocumentSnapshot,
-} from 'firebase/firestore'
-import { useQuery } from 'react-query'
+import { collection, getDocs } from 'firebase/firestore'
+import { useQuery, useQueryClient } from 'react-query'
 
 import { firestore } from '@/lib/firebase'
 import { Response } from '../types'
@@ -14,7 +7,7 @@ import { RESPONSES_COLLECTION } from '../constants'
 
 export const useResponses = () => {
   return useQuery({
-    queryKey: 'responses',
+    queryKey: RESPONSES_COLLECTION,
     queryFn: async () => {
       const result: Response[] = []
 
@@ -33,4 +26,10 @@ export const useResponses = () => {
       return result
     },
   })
+}
+
+export const useResponsesData = () => {
+  const queryClient = useQueryClient()
+
+  return queryClient.getQueryData(RESPONSES_COLLECTION) as Response[]
 }
