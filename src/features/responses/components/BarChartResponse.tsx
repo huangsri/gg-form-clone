@@ -44,14 +44,8 @@ export const BarChartResponse = (props: BarChartResponseProps) => {
           >
             <ResponsiveBar
               data={data}
-              indexBy="id"
               colors={() => '#673ab7'}
               labelTextColor="white"
-              label={({ value }) => {
-                const percent = (((value ?? 0) / total) * 100).toFixed(1)
-
-                return `${value} (${percent}%)`
-              }}
               margin={{
                 top: 30,
                 bottom: 20,
@@ -79,6 +73,32 @@ export const BarChartResponse = (props: BarChartResponseProps) => {
                     <Box sx={{ fontWeight: 600 }}>{indexValue}</Box>
                     <Box>Count: {value}</Box>
                   </Box>
+                )
+              }}
+              barComponent={({ bar: { x, y, width, height, color, data } }) => {
+                const w = width > BAR_MAX_WIDTH ? BAR_MAX_WIDTH : width
+                const percent = (((data.value ?? 0) / total) * 100).toFixed(1)
+                const label = `${data.value} (${percent}%)`
+
+                return (
+                  <g>
+                    <rect
+                      x={x + width / 2 - w / 2}
+                      y={y}
+                      width={w}
+                      height={height}
+                      fill={color}
+                    />
+
+                    <text
+                      fill="white"
+                      fontSize="12px"
+                      x={x + width / 2 - w / 5}
+                      y={y + 12}
+                    >
+                      {label}
+                    </text>
+                  </g>
                 )
               }}
             />
@@ -116,3 +136,5 @@ const ResponseList = (props: ResponseListProps) => {
     </Box>
   )
 }
+
+const BAR_MAX_WIDTH = 120

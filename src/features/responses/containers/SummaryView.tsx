@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import dynamic from 'next/dynamic'
 
 import {
-  BarChartResponseProps,
+  BarChartResponse,
   DateResponse,
   PieChartResponseProps,
 } from '../components'
@@ -15,12 +15,6 @@ import { PIE_COLORS } from '../constants'
 
 const DynamicPieChartResponse = dynamic<PieChartResponseProps>(
   () => import('../components').then((mod) => mod.PieChartResponse),
-  {
-    ssr: false,
-  }
-)
-const DynamicBarChartResponse = dynamic<BarChartResponseProps>(
-  () => import('../components').then((mod) => mod.BarChartResponse),
   {
     ssr: false,
   }
@@ -86,7 +80,7 @@ export const SummaryView = () => {
 
   return (
     <Box sx={{ display: 'grid', gap: '12px' }}>
-      <DynamicBarChartResponse
+      <BarChartResponse
         title="Name"
         count={count}
         data={names}
