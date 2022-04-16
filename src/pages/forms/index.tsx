@@ -1,16 +1,24 @@
-import { NextPage } from 'next'
+import Head from 'next/head'
 import { Box } from '@mui/material'
+import { Fragment } from 'react'
+import { NextPage } from 'next'
+import { deepPurple } from '@mui/material/colors'
 
 import { FormContainer } from '@/features/forms/containers'
-import { deepPurple } from '@mui/material/colors'
 
 const FormPage: NextPage = () => {
   return (
-    <Box sx={{ bgcolor: deepPurple[50], minHeight: '100vh' }}>
-      <Box sx={{ maxWidth: '770px', mx: 'auto', pt: '12px' }}>
-        <FormContainer />
+    <Fragment>
+      <Head>
+        <title>LeaveForm</title>
+      </Head>
+
+      <Box sx={{ bgcolor: deepPurple[50], minHeight: '100vh' }}>
+        <Box sx={{ maxWidth: '770px', mx: 'auto', pt: '12px' }}>
+          <FormContainer />
+        </Box>
       </Box>
-    </Box>
+    </Fragment>
   )
 }
 
