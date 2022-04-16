@@ -18,9 +18,9 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
   const [user, setUser] = useState<User | null>(null)
 
-  const auth = getAuth()
-
   const signIn = (data: LoginFormInput) => {
+    const auth = getAuth()
+
     signInWithEmailAndPassword(auth, data.email, data.password).then(
       (credential) => {
         setUser(credential.user)
@@ -30,10 +30,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
   const signOut = () => {
     const auth = getAuth()
+
     _signOut(auth)
       .then(() => {
         setUser(null)
-        // Sign-out successful.
       })
       .catch(() => {
         // An error happened.
