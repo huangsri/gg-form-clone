@@ -1,6 +1,12 @@
 import { Box, CircularProgress } from '@mui/material'
 
-export const LoadingResponse = () => {
+type LoadingResponseProps = {
+  text?: string
+}
+
+export const LoadingResponse = (props: LoadingResponseProps) => {
+  const { text = 'Loading responses...' } = props
+
   return (
     <Box
       sx={{
@@ -23,7 +29,7 @@ export const LoadingResponse = () => {
         }}
       >
         <CircularProgress size="32" thickness={5} />
-        <Box>Loading responses...</Box>
+        <Box>{text}</Box>
       </Box>
     </Box>
   )
