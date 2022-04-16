@@ -10,7 +10,7 @@ const FormPage: NextPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>LeaveForm</title>
+        <title>Leave Form</title>
       </Head>
 
       <Box sx={{ bgcolor: deepPurple[50], minHeight: '100vh' }}>
