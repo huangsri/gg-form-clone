@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles'
 export const Card = styled(Box)(() => ({
   border: '1px solid #dadce0',
   borderRadius: '8px',
-  bgcolor: 'white',
+  backgroundColor: 'white',
 }))
 
 export const Grid = styled(Box)(() => ({
