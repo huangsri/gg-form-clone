@@ -49,7 +49,7 @@ export const ResponseContainer = () => {
                 <TabPanel value="1" sx={{ p: 0 }}>
                   <SummaryView />
                 </TabPanel>
-                <TabPanel value="3" sx={{ p: 0 }}>
+                <TabPanel value="2" sx={{ p: 0 }}>
                   <IndividualView currentIndex={currentIndex} />
                 </TabPanel>
               </Fragment>

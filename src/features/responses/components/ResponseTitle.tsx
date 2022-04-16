@@ -39,7 +39,7 @@ export const ResponseTitle = (props: ResponseTitleProps) => {
 
       <CustomTab handleChange={handleChangeTab} />
 
-      {currentTab === '3' && (
+      {currentTab === '2' ? (
         <Box
           sx={{
             display: 'flex',
@@ -73,6 +73,8 @@ export const ResponseTitle = (props: ResponseTitleProps) => {
             </IconButton>
           </Box>
         </Box>
+      ) : (
+        <Box sx={{ p: '12px' }} />
       )}
     </Box>
   )
@@ -87,10 +89,9 @@ const CustomTab = (props: CustomTabProps) => {
 
   return (
     <Box>
-      <StyledTabs onChange={handleChange} aria-label="styled tabs example">
+      <StyledTabs onChange={handleChange} aria-label="styled tabs">
         <StyledTab value="1" label="Summary" />
-        <StyledTab value="2" label="Question" />
-        <StyledTab value="3" label="Individual" />
+        <StyledTab value="2" label="Individual" />
       </StyledTabs>
     </Box>
   )
