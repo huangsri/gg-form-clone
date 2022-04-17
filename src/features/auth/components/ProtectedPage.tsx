@@ -10,16 +10,9 @@ type ProtectedPageProps = {
 export const ProtectedPage = (props: ProtectedPageProps) => {
   const { children } = props
 
-  const { user, signIn } = useAuthContext()
+  const { user } = useAuthContext()
 
-  if (!user)
-    return (
-      <LoginForm
-        onSubmitForm={(data) => {
-          signIn(data)
-        }}
-      />
-    )
+  if (!user) return <LoginForm />
 
   return <Fragment>{children}</Fragment>
 }

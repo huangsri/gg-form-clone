@@ -5,6 +5,7 @@ import {
   signOut as _signOut,
   User,
 } from 'firebase/auth'
+import { useMutation } from 'react-query'
 
 import { AuthContextProvider } from '../context'
 import { LoginFormInput } from '../types'
@@ -18,15 +19,19 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
   const [user, setUser] = useState<User | null>(null)
 
-  const signIn = (data: LoginFormInput) => {
-    const auth = getAuth()
+  const { mutate: signIn } = useMutation<void, void, LoginFormInput>(
+    async (data) => {
+      const auth = getAuth()
 
-    signInWithEmailAndPassword(auth, data.email, data.password).then(
-      (credential) => {
-        setUser(credential.user)
-      }
-    )
-  }
+      const credential = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      )
+
+      setUser(credential.user)
+    }
+  )
 
   const signOut = () => {
     const auth = getAuth()

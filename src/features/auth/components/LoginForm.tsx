@@ -1,16 +1,16 @@
 import { Box, Button, TextField } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 
 import { Card } from '@/components/shared'
 import { LoginFormInput } from '../types'
 
-type LoginFormProps = {
-  onSubmitForm: (data: LoginFormInput) => void
-}
+import { useAuthContext } from '../context'
 
-export const LoginForm = (props: LoginFormProps) => {
-  const { onSubmitForm } = props
+export const LoginForm = () => {
+  const { signIn } = useAuthContext()
 
+  const [error, setError] = useState(false)
   const { register, handleSubmit } = useForm<LoginFormInput>()
 
   return (
@@ -31,12 +31,19 @@ export const LoginForm = (props: LoginFormProps) => {
       <Box sx={{ textAlign: 'center' }}>
         <Box sx={{ fontSize: '24px' }}>Sign in</Box>
         <Box sx={{ mt: '8px' }}>to continue to GG Form</Box>
+
+        {error && (
+          <Box sx={{ mt: '24px', color: 'red' }}>Invalid Credentials</Box>
+        )}
       </Box>
 
       <form
         onSubmit={handleSubmit((data) => {
-          console.log(data)
-          onSubmitForm(data)
+          signIn(data, {
+            onError() {
+              setError(true)
+            },
+          })
         })}
       >
         <Box sx={{ display: 'grid', gap: '12px', mt: '32px' }}>
