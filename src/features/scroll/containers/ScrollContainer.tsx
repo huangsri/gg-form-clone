@@ -7,6 +7,7 @@ import { usePassengers } from '../services'
 import { Passenger } from '../types'
 import { Box, Button } from '@mui/material'
 import { LoadingResponse } from '@/features/responses/components'
+import { PerspectiveImage } from '../components'
 
 export const ScrollContainer = () => {
   const { ref, inView } = useInView()
@@ -92,14 +93,8 @@ const PassengerItem = (props: PassengerItemProps) => {
           <Box sx={{ fontSize: '14px' }}>{airline.slogan}</Box>
         </Box>
 
-        <Box
-          sx={{
-            img: {
-              width: '100px',
-            },
-          }}
-        >
-          <img src={airline.logo} alt={airline.name} />
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <PerspectiveImage src={airline.logo} alt={airline.name} />
         </Box>
       </Box>
 

@@ -4,10 +4,11 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { Fragment } from 'react'
 
 import { ThemeProvider, createEmotionCache } from '@/styles/theme'
-import { Fragment } from 'react'
 import { AuthProvider } from '@/features/auth/components'
+import '@/lib/utils/init'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
