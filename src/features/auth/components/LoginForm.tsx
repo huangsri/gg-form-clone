@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from '@mui/material'
+import { Box, TextField } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 
@@ -6,11 +6,13 @@ import { Card } from '@/components/shared'
 import { LoginFormInput } from '../types'
 
 import { useAuthContext } from '../context'
+import { LoadingButton } from '@mui/lab'
 
 export const LoginForm = () => {
   const { signIn } = useAuthContext()
 
   const [error, setError] = useState(false)
+  const [isLoading, setLoading] = useState(false)
   const { register, handleSubmit } = useForm<LoginFormInput>()
 
   return (
@@ -39,9 +41,13 @@ export const LoginForm = () => {
 
       <form
         onSubmit={handleSubmit((data) => {
+          setLoading(true)
           signIn(data, {
             onError() {
               setError(true)
+            },
+            onSettled() {
+              setLoading(false)
             },
           })
         })}
@@ -61,9 +67,9 @@ export const LoginForm = () => {
         </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: '32px' }}>
-          <Button type="submit" variant="contained">
+          <LoadingButton type="submit" variant="contained" loading={isLoading}>
             Sign in
-          </Button>
+          </LoadingButton>
         </Box>
       </form>
     </Card>
