@@ -1,3 +1,4 @@
+import { Box, CircularProgress } from '@mui/material'
 import { Fragment } from 'react'
 
 import { useAuthContext } from '../context'
@@ -10,7 +11,21 @@ type ProtectedPageProps = {
 export const ProtectedPage = (props: ProtectedPageProps) => {
   const { children } = props
 
-  const { user } = useAuthContext()
+  const { user, ready } = useAuthContext()
+
+  if (!ready)
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '200px',
+        }}
+      >
+        <CircularProgress size={48} />
+      </Box>
+    )
 
   if (!user) return <LoginForm />
 

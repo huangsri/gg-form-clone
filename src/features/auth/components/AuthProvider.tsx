@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -18,6 +18,18 @@ export const AuthProvider = (props: AuthProviderProps) => {
   const { children } = props
 
   const [user, setUser] = useState<User | null>(null)
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    const auth = getAuth()
+    setTimeout(() => {
+      if (auth.currentUser) {
+        setUser(auth.currentUser)
+      }
+
+      setReady(true)
+    }, 1000)
+  }, [])
 
   const { mutate: signIn } = useMutation<void, void, LoginFormInput>(
     async (data) => {
@@ -46,6 +58,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
   }
 
   const contextValue = {
+    ready,
     user,
     signIn,
     signOut,
