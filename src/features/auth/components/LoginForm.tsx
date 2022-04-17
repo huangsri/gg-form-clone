@@ -35,7 +35,9 @@ export const LoginForm = () => {
         <Box sx={{ mt: '8px' }}>to continue to GG Form</Box>
 
         {error && (
-          <Box sx={{ mt: '24px', color: 'red' }}>Invalid Credentials</Box>
+          <Box sx={{ mt: '24px', color: 'red', fontSize: '14px' }}>
+            Invalid Credentials
+          </Box>
         )}
       </Box>
 
